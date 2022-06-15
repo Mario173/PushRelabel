@@ -68,6 +68,5 @@ export const stackPush = (graph, node, deltaScale) => {
                 }
             }
         }
-        break;
     }
 };
