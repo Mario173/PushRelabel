@@ -83,7 +83,7 @@ export const Matrix = (props) => {
                         }
                     }));
                 }
-                for(let col in capacities[row]) {
+                for(let col = 0; col < capacities.length; col++) {
                     if(!isNaN(capacities[row][col]) && capacities[row][col] > 0) {
                         setState(prevState => ({
                             ...prevState,
