@@ -2,7 +2,7 @@ import * as help from './graphHelpers';
 import { stackPush } from './commonOperations';
 
 export const waveScalingPushRelabel = (graph) => {
-    let deltaScale = Math.pow(2, Math.floor(Math.log(help.maxValue(graph.arcs, 'capacity')))); // pogledaj kad se vratiš
+    let deltaScale = Math.pow(2, Math.floor(Math.log(help.maxValue(graph.arcs, 'capacity'))));
     let l = Math.sqrt(Math.log(help.maxValue(graph.arcs, 'capacity')));
 
     graph.arcs = help.setInitialFlow(graph.arcs, deltaScale);
@@ -35,3 +35,9 @@ export const waveScalingPushRelabel = (graph) => {
 
     return graph;
 };
+
+function sleepFor(sleepDuration){
+    var now = new Date().getTime();
+    while(new Date().getTime() < now + sleepDuration){ /* Do nothing */ }
+}
+

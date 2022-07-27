@@ -1,7 +1,7 @@
 /* Metoda koja postavlja početne vrijednosti toka svih bridova na početku izvođenja guraj-promijeni visinu algoritma */
 export const setInitialFlow = (arcs) => {
     for(let i = 0; i < arcs.length; i += 2) {
-        if(arcs[i].startNode === 1) {
+        if(arcs[i].startNode === 1 && arcs[i].endNode !== 1) {
             arcs[i].flow = arcs[i].capacity;
             arcs[i + 1].flow = (-1) * arcs[i].capacity;
         }
@@ -20,7 +20,7 @@ export const setExcess = (nodes, arcs) => {
     for(let i = 1; i < nodes.length; i++) {
         nodes[i - 1].excess = 0;
         for(let arc of arcs) {
-            if(arc.endNode === i) {
+            if(arc.endNode === i && arc.startNode !== i) {
                 nodes[i - 1].excess += arc.flow;
             }
         }
@@ -29,7 +29,7 @@ export const setExcess = (nodes, arcs) => {
 };
 
 /* Metoda koja računa ukupni višak u grafu (algoritam staje kada je ukupni višak 0) */
-export const excessSum = (nodes, isWaveScaling) => nodes.reduce((partialSum, elem) => partialSum + ( isWaveScaling && elem == nodes[nodes.lenght -1] ? 0 : elem.excess ), -nodes[0].excess);
+export const excessSum = (nodes, isWaveScaling) => nodes.reduce((partialSum, elem) => partialSum + ( isWaveScaling && (elem.label == nodes.length - 1) ? 0 : elem.excess ), -nodes[0].excess);
 
 /* Metoda koja pronalazi prvi aktivni vrh u grafu */
 export const findFirstActive = (nodes) => nodes.findIndex(elem => isNodeActive(nodes.length, elem));
@@ -40,7 +40,7 @@ export const findAllActive = (nodes) => nodes.filter(elem => isNodeActive(nodes.
 /* Metoda koja pronalazi prvi dopustivi brid za određeni vrh */
 export const admissibleArc = (i, arcs, nodes, isExcessScaling=false, deltaScale=0) => {
     for(let arcInd in arcs) {
-        if(arcs[arcInd].startNode === i + 1
+        if(arcs[arcInd].startNode === i + 1 && arcs[arcInd].endNode !== i + 1
             && nodes[arcs[arcInd].endNode - 1].height === nodes[i].height - 1
             && arcs[arcInd].flow !== arcs[arcInd].capacity
             && ( isExcessScaling ? deltaScale > nodes[arcs[arcInd].endNode - 1].excess : true ) ) {

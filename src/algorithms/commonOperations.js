@@ -41,6 +41,7 @@ export const discharge = (graph, activeNodes, i) => {
 
 export const pushExcessScaling = (graph, startNodeIndex, admissibleArcIndex, diffEndNode) => {
     let delta = Math.min(graph.nodes[startNodeIndex].excess, graph.arcs[admissibleArcIndex].capacity - graph.arcs[admissibleArcIndex].flow, diffEndNode);
+    delta = delta < 0 ? 0 : delta;
     graph.arcs[admissibleArcIndex].flow += delta;
     graph.arcs[admissibleArcIndex + (admissibleArcIndex % 2 === 0 ? 1 : -1)].flow -= delta;
     setExcess(graph.nodes, graph.arcs);
@@ -54,7 +55,7 @@ export const stackPush = (graph, node, deltaScale) => {
         for(let [index, arc] of arcsOutOfCurrNode.entries()) {
             if( !isAdmissible(arc, graph.nodes) ) {
                 if(index === arcsOutOfCurrNode.length - 1) {
-                    stack.pop();
+                    stack.splice(stack.indexOf(currNode), 1);
                     relabel(graph, currNode.label);
                     graph.nodes[currNode.label].notYetRelabeled = false;
                 }
@@ -64,7 +65,7 @@ export const stackPush = (graph, node, deltaScale) => {
                 let arcIndex = graph.arcs.indexOf(arc);
                 pushExcessScaling(graph, currNode.label, arcIndex, deltaScale - graph.nodes[arc.endNode - 1].excess);
                 if(graph.nodes[currNode.label].excess === 0) {
-                    stack.pop();
+                    stack.splice(stack.indexOf(currNode), 1);
                 }
             }
         }
