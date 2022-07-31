@@ -93,12 +93,12 @@ export const Matrix = (props) => {
                                     ...prevState.graph.arcs, {
                                         startNode: parseInt(row) + 1,
                                         endNode: parseInt(col) + 1,
-                                        capacity: capacities[row][col],
+                                        capacity: parseInt(capacities[row][col]),
                                         flow: 0
                                     }, {
                                         startNode: parseInt(col) + 1,
                                         endNode: parseInt(row) + 1,
-                                        capacity: (-1) * capacities[row][col],
+                                        capacity: 0,
                                         flow: 0
                                     }
                                 ]

@@ -11,6 +11,7 @@ export const pushRelabel = (graph) => {
     while( help.excessSum(graph.nodes) !== 0 ) {
         let startNodeIndex = help.findFirstActive(graph.nodes);
         let admissibleArcIndex = help.admissibleArc(startNodeIndex, graph.arcs, graph.nodes);
+        console.log(startNodeIndex, admissibleArcIndex)
         if(startNodeIndex !== -1 && admissibleArcIndex !== -1) {
             push(graph, startNodeIndex, admissibleArcIndex);
         } else {

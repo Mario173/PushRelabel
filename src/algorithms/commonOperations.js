@@ -2,6 +2,7 @@ import { setExcess, isNodeActive, admissibleArc, isAdmissible } from "./graphHel
 
 export const push = (graph, startNodeIndex, admissibleArcIndex) => {
     let delta = Math.min(graph.nodes[startNodeIndex].excess, graph.arcs[admissibleArcIndex].capacity - graph.arcs[admissibleArcIndex].flow);
+    console.log('push', graph.nodes[startNodeIndex].excess, graph.arcs[admissibleArcIndex].capacity - graph.arcs[admissibleArcIndex].flow)
     graph.arcs[admissibleArcIndex].flow += delta;
     graph.arcs[admissibleArcIndex + (admissibleArcIndex % 2 === 0 ? 1 : -1)].flow -= delta;
     setExcess(graph.nodes, graph.arcs);
