@@ -1,12 +1,12 @@
 /* Metoda koja postavlja početne vrijednosti toka svih bridova na početku izvođenja guraj-promijeni visinu algoritma */
-export const setInitialFlow = (arcs) => {
-    for(let i = 0; i < arcs.length; i += 2) {
-        if(arcs[i].startNode === 1) {
-            arcs[i].flow = arcs[i].capacity;
-            arcs[i + 1].flow = (-1) * arcs[i].capacity;
+export const setInitialFlow = (edges) => {
+    for(let i = 0; i < edges.length; i += 2) {
+        if(edges[i].startNode === 1) {
+            edges[i].flow = edges[i].capacity;
+            edges[i + 1].flow = (-1) * edges[i].capacity;
         }
     }
-    return arcs;
+    return edges;
 };
 
 /* Metoda koja postavlja početne vrijednosti visine svih vrhova na početku izvođenja guraj-promijeni visinu algoritma */
@@ -16,12 +16,12 @@ export const setInitialHeight = (nodes) => {
 }
 
 /* Metoda koja postavlja vrijednost viška svih vrhova */
-export const setExcess = (nodes, arcs) => {
+export const setExcess = (nodes, edges) => {
     for(let i = 1; i < nodes.length; i++) {
         nodes[i - 1].excess = 0;
-        for(let arc of arcs) {
-            if(arc.endNode === i) {
-                nodes[i - 1].excess += arc.flow;
+        for(let edge of edges) {
+            if(edge.endNode === i) {
+                nodes[i - 1].excess += edge.flow;
             }
         }
     }
@@ -38,13 +38,13 @@ export const findFirstActive = (nodes) => nodes.findIndex(elem => isNodeActive(n
 export const findAllActive = (nodes) => nodes.filter(elem => isNodeActive(nodes.length, elem));
 
 /* Metoda koja pronalazi prvi dopustivi brid za određeni vrh */
-export const admissibleArc = (i, arcs, nodes, isExcessScaling=false, deltaScale=0) => {
-    for(let arcInd in arcs) {
-        if(arcs[arcInd].startNode === i + 1
-            && nodes[arcs[arcInd].endNode - 1].height === nodes[i].height - 1
-            && arcs[arcInd].flow !== arcs[arcInd].capacity
-            && ( isExcessScaling ? deltaScale > nodes[arcs[arcInd].endNode - 1].excess : true ) ) {
-            return parseInt(arcInd);
+export const admissibleEdge = (i, edges, nodes, isExcessScaling=false, deltaScale=0) => {
+    for(let edgeInd in edges) {
+        if(edges[edgeInd].startNode === i + 1
+            && nodes[edges[edgeInd].endNode - 1].height === nodes[i].height - 1
+            && edges[edgeInd].flow !== edges[edgeInd].capacity
+            && ( isExcessScaling ? deltaScale > nodes[edges[edgeInd].endNode - 1].excess : true ) ) {
+            return parseInt(edgeInd);
         }
     }
     return -1;
@@ -60,4 +60,4 @@ export const maxValue = (arr, value) => Math.max(...arr.map(elem => elem[value])
 export const highExcessSmallestHeight = (nodes, deltaScale) => nodes.filter(elem => elem.excess > deltaScale / 2).reduce((min, elem) => elem.height < min.height ? elem : min);
 
 /* Metoda koja provjerava je li dani brid dopustiv */
-export const isAdmissible = (arc, nodes) => nodes[arc.endNode - 1].height === nodes[arc.startNode - 1].height - 1 && arc.flow !== arc.capacity;
+export const isAdmissible = (edge, nodes) => nodes[edge.endNode - 1].height === nodes[edge.startNode - 1].height - 1 && edge.flow !== edge.capacity;

@@ -23,7 +23,7 @@ let App = () => {
         height: 0,
         excess: 0
       }],
-      arcs: []
+      edges: []
     },
     greenFields: [],
     tabOne: true,
@@ -49,10 +49,10 @@ let App = () => {
   const waveScalingRef = useRef(null);
 
   /* Privremeno potrebna funkcija, ispisuje sve bridove na ekran */
-  const printArcs = () => arcRef.current.innerText = ('Arcs: ' + ( state.graphForAlgs.arcs && state.graphForAlgs.arcs.length !== 0 ? state.graphForAlgs.arcs.map(curr => curr.startNode + ' -> ' + curr.endNode + ', ' + curr.capacity + '; ', '') : '' ) );
+  const printArcs = () => arcRef.current.innerText = ('Arcs: ' + ( state.graphForAlgs.edges && state.graphForAlgs.edges.length !== 0 ? state.graphForAlgs.edges.map(curr => curr.startNode + ' -> ' + curr.endNode + ', ' + curr.capacity + '; ', '') : '' ) );
 
   /* Funkcija koja se pozove svaki put kada se array koji sadrži bridove promijeni */
-  useEffect(() => { arcRef.current.innerText = printArcs() }, [state.graphForAlgs.arcs]);
+  useEffect(() => { arcRef.current.innerText = printArcs() }, [state.graphForAlgs.edges]);
 
   /* Funkcija koja se pozove svaki put kada se promijeni neki dio grafa i iscrta promijenjeni graf */
   useEffect(() => {
@@ -78,14 +78,14 @@ let App = () => {
       title: 'Sink for the flow'
     });
 
-    for(let [arcInd, arc] of state.graphForAlgs.arcs.entries()) {
-      if(parseInt(arc.capacity) > 0) {
+    for(let [edgeInd, edge] of state.graphForAlgs.edges.entries()) {
+      if(parseInt(edge.capacity) > 0) {
         graph.edges.push({
-          from: parseInt(arc.startNode),
-          to: parseInt(arc.endNode),
-          id: parseInt(arcInd),
-          label: arc.flow + '/' + arc.capacity,
-          font: { align: arc.startNode < arc.endNode ? "top" : "bottom" }
+          from: parseInt(edge.startNode),
+          to: parseInt(edge.endNode),
+          id: parseInt(edgeInd),
+          label: edge.flow + '/' + edge.capacity,
+          font: { align: edge.startNode < edge.endNode ? "top" : "bottom" }
         });
       }
     }
@@ -100,14 +100,14 @@ let App = () => {
 
   const getEdges = (resultGraph) => {
     let edges = [];
-    for(let [arcInd, arc] of resultGraph.arcs.entries()) {
-      if(parseInt(arc.capacity) > 0) {
+    for(let [edgeInd, edge] of resultGraph.edges.entries()) {
+      if(parseInt(edge.capacity) > 0) {
         edges.push({
-          from: parseInt(arc.startNode),
-          to: parseInt(arc.endNode),
-          id: parseInt(arcInd),
-          label: arc.flow + '/' + arc.capacity,
-          font: { align: arc.startNode < arc.endNode ? "top" : "bottom" }
+          from: parseInt(edge.startNode),
+          to: parseInt(edge.endNode),
+          id: parseInt(edgeInd),
+          label: edge.flow + '/' + edge.capacity,
+          font: { align: edge.startNode < edge.endNode ? "top" : "bottom" }
         });
       }
     }
@@ -124,7 +124,7 @@ let App = () => {
         edges: getEdges(result)
       }
     }));
-    pushRelRef.current.innerText = 'Max flow: ' + result.arcs.reduce((partialSum, elem) => partialSum + (elem.startNode === 1 && elem.endNode !== 1 ? Math.max(elem.flow, 0) : 0), 0);
+    pushRelRef.current.innerText = 'Max flow: ' + result.edges.reduce((partialSum, elem) => partialSum + (elem.startNode === 1 && elem.endNode !== 1 ? elem.flow : 0), 0);
   };
 
   const calculateFifoMaxFlow = () => {
@@ -136,7 +136,7 @@ let App = () => {
         edges: getEdges(result)
       }
     }));
-    fifoRef.current.innerText = 'Fifo max flow: ' + result.arcs.reduce((partialSum, elem) => partialSum + (elem.startNode === 1 && elem.endNode !== 1 ? Math.max(elem.flow, 0) : 0), 0);
+    fifoRef.current.innerText = 'Fifo max flow: ' + result.edges.reduce((partialSum, elem) => partialSum + (elem.startNode === 1 && elem.endNode !== 1 ? elem.flow : 0), 0);
   };
 
   const calculateExcessScalingMaxFlow = () => {
@@ -148,7 +148,7 @@ let App = () => {
         edges: getEdges(result)
       }
     }));
-    excessScalingRef.current.innerText = 'Excess scaling max flow: ' + result.arcs.reduce((partialSum, elem) => partialSum + (elem.startNode === 1 && elem.endNode !== 1 ? Math.max(elem.flow, 0) : 0), 0);
+    excessScalingRef.current.innerText = 'Excess scaling max flow: ' + result.edges.reduce((partialSum, elem) => partialSum + (elem.startNode === 1 && elem.endNode !== 1 ? elem.flow : 0), 0);
   };
 
   const calculateWaveScalingMaxFlow = () => {
@@ -160,7 +160,7 @@ let App = () => {
         edges: getEdges(result)
       }
     }));
-    waveScalingRef.current.innerText = 'Wave scaling max flow: ' + result.arcs.reduce((partialSum, elem) => partialSum + (elem.startNode === 1 && elem.endNode !== 1 ? Math.max(elem.flow, 0) : 0), 0);
+    waveScalingRef.current.innerText = 'Wave scaling max flow: ' + result.edges.reduce((partialSum, elem) => partialSum + (elem.startNode === 1 && elem.endNode !== 1 ? elem.flow : 0), 0);
   };
 
   return (

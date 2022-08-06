@@ -18,7 +18,7 @@ export const Matrix = (props) => {
                 height: 0,
                 excess: 0
             }],
-            arcs: []
+            edges: []
         }
     });
 
@@ -64,7 +64,7 @@ export const Matrix = (props) => {
                         height: 0,
                         excess: 0
                     }],
-                    arcs: []
+                    edges: []
                 }
             }));
             for(let row in capacities) {
@@ -89,8 +89,8 @@ export const Matrix = (props) => {
                             ...prevState,
                             graph: {
                                 ...prevState.graph,
-                                arcs: [
-                                    ...prevState.graph.arcs, {
+                                edges: [
+                                    ...prevState.graph.edges, {
                                         startNode: parseInt(row) + 1,
                                         endNode: parseInt(col) + 1,
                                         capacity: parseInt(capacities[row][col]),

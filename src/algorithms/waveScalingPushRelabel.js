@@ -2,13 +2,13 @@ import * as help from './graphHelpers';
 import { stackPush } from './commonOperations';
 
 export const waveScalingPushRelabel = (graph) => {
-    let deltaScale = Math.pow(2, Math.floor(Math.log(help.maxValue(graph.arcs, 'capacity'))));
-    let l = Math.sqrt(Math.log(help.maxValue(graph.arcs, 'capacity')));
+    let deltaScale = Math.pow(2, Math.floor(Math.log(help.maxValue(graph.edges, 'capacity'))));
+    let l = Math.sqrt(Math.log(help.maxValue(graph.edges, 'capacity')));
 
-    graph.arcs = help.setInitialFlow(graph.arcs, deltaScale);
+    graph.edges = help.setInitialFlow(graph.edges, deltaScale);
     graph.nodes = help.setInitialHeight(graph.nodes);
 
-    graph.nodes = help.setExcess(graph.nodes, graph.arcs);
+    graph.nodes = help.setExcess(graph.nodes, graph.edges);
 
     while( deltaScale >= 1 ) {
         let excessSum = help.excessSum(graph.nodes, true);
@@ -35,9 +35,4 @@ export const waveScalingPushRelabel = (graph) => {
 
     return graph;
 };
-
-function sleepFor(sleepDuration){
-    var now = new Date().getTime();
-    while(new Date().getTime() < now + sleepDuration){ /* Do nothing */ }
-}
 

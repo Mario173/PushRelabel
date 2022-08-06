@@ -14,7 +14,7 @@ export const ByHand = (props) => {
                 height: 0,
                 excess: 0
             }],
-            arcs: []
+            edges: []
         },
         greenFields: []
     });
@@ -33,7 +33,7 @@ export const ByHand = (props) => {
                 ...state,
                 graph: {
                 ...state.graph,
-                arcs: [...state.graph.arcs, {
+                edges: [...state.graph.edges, {
                     startNode: parseInt(state.start),
                     endNode: parseInt(state.end),
                     capacity: parseInt(state.capacity),

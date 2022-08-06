@@ -2,10 +2,10 @@ import * as help from './graphHelpers';
 import { discharge } from './commonOperations';
 
 export const fifoPushRelabel = (graph) => {
-    graph.arcs = help.setInitialFlow(graph.arcs);
+    graph.edges = help.setInitialFlow(graph.edges);
     graph.nodes = help.setInitialHeight(graph.nodes);
 
-    graph.nodes = help.setExcess(graph.nodes, graph.arcs);
+    graph.nodes = help.setExcess(graph.nodes, graph.edges);
 
     let activeNodes = help.findAllActive(graph.nodes);
 
