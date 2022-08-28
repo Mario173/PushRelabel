@@ -42,17 +42,17 @@ let App = () => {
   });
 
   /* Ref-ovi potrebni da bi dobili podatke iz DOM-a */
-  const arcRef = useRef(null);
+  //const arcRef = useRef(null);
   const pushRelRef = useRef(null);
   const fifoRef = useRef(null);
   const excessScalingRef = useRef(null);
   const waveScalingRef = useRef(null);
 
   /* Privremeno potrebna funkcija, ispisuje sve bridove na ekran */
-  const printArcs = () => arcRef.current.innerText = ('Arcs: ' + ( state.graphForAlgs.edges && state.graphForAlgs.edges.length !== 0 ? state.graphForAlgs.edges.map(curr => curr.startNode + ' -> ' + curr.endNode + ', ' + curr.capacity + '; ', '') : '' ) );
+  //const printArcs = () => arcRef.current.innerText = ('Arcs: ' + ( state.graphForAlgs.edges && state.graphForAlgs.edges.length !== 0 ? state.graphForAlgs.edges.map(curr => curr.startNode + ' -> ' + curr.endNode + ', ' + curr.capacity + '; ', '') : '' ) );
 
   /* Funkcija koja se pozove svaki put kada se array koji sadrži bridove promijeni */
-  useEffect(() => { arcRef.current.innerText = printArcs() }, [state.graphForAlgs.edges]);
+  //useEffect(() => { arcRef.current.innerText = printArcs() }, [state.graphForAlgs.edges]);
 
   /* Funkcija koja se pozove svaki put kada se promijeni neki dio grafa i iscrta promijenjeni graf */
   useEffect(() => {
@@ -98,7 +98,7 @@ let App = () => {
 
   const generateGraph = (graph) => setState({ ...state, graphForAlgs: graph });
 
-  const getEdges = (resultGraph) => {
+  const getEdges = (resultGraph, totalFlow) => {
     let edges = [];
     for(let [edgeInd, edge] of resultGraph.edges.entries()) {
       if(parseInt(edge.capacity) > 0) {
@@ -107,7 +107,8 @@ let App = () => {
           to: parseInt(edge.endNode),
           id: parseInt(edgeInd),
           label: edge.flow + '/' + edge.capacity,
-          font: { align: edge.startNode < edge.endNode ? "top" : "bottom" }
+          font: { align: "top"/*edge.startNode < edge.endNode  ? "top" : "bottom"*/ },
+          value: parseFloat(edge.flow) / parseFloat(totalFlow)
         });
       }
     }
@@ -116,52 +117,78 @@ let App = () => {
 
   /* Metode koje ispisuju maksimalan tok na ekran nakon što se izračuna */
   const calculateMaxFlow = () => {
+    let start = new Date();
     let result = pushRelabel(structuredClone(state.graphForAlgs));
+    let end = new Date();
+    let totalFlow = result.edges.reduce((partialSum, elem) => partialSum + (elem.startNode === 1 && elem.endNode !== 1 ? elem.flow : 0), 0);
     setState(prevState => ({
       ...prevState,
       graph: {
         ...prevState.graph,
-        edges: getEdges(result)
+        edges: getEdges(result, totalFlow)
       }
     }));
-    pushRelRef.current.innerText = 'Max flow: ' + result.edges.reduce((partialSum, elem) => partialSum + (elem.startNode === 1 && elem.endNode !== 1 ? elem.flow : 0), 0);
+    pushRelRef.current.innerHTML = 'Max flow: ' + totalFlow + '<br /> Time elapsed: ' + (end - start) + 'ms';
   };
 
   const calculateFifoMaxFlow = () => {
+    let start = new Date();
     let result = fifoPushRelabel(structuredClone(state.graphForAlgs));
+    let end = new Date();
+    let totalFlow = result.edges.reduce((partialSum, elem) => partialSum + (elem.startNode === 1 && elem.endNode !== 1 ? elem.flow : 0), 0);
     setState(prevState => ({
       ...prevState,
       graph: {
         ...prevState.graph,
-        edges: getEdges(result)
+        edges: getEdges(result, totalFlow)
       }
     }));
-    fifoRef.current.innerText = 'Fifo max flow: ' + result.edges.reduce((partialSum, elem) => partialSum + (elem.startNode === 1 && elem.endNode !== 1 ? elem.flow : 0), 0);
+    fifoRef.current.innerHTML = 'Fifo max flow: ' + totalFlow + '<br /> Time elapsed: ' + (end - start) + 'ms';
   };
 
   const calculateExcessScalingMaxFlow = () => {
+    let start = new Date();
     let result = excessScalingPushRelabel(structuredClone(state.graphForAlgs));
+    let end = new Date();
+    let totalFlow = result.edges.reduce((partialSum, elem) => partialSum + (elem.startNode === 1 && elem.endNode !== 1 ? elem.flow : 0), 0);
     setState(prevState => ({
       ...prevState,
       graph: {
         ...prevState.graph,
-        edges: getEdges(result)
+        edges: getEdges(result, totalFlow)
       }
     }));
-    excessScalingRef.current.innerText = 'Excess scaling max flow: ' + result.edges.reduce((partialSum, elem) => partialSum + (elem.startNode === 1 && elem.endNode !== 1 ? elem.flow : 0), 0);
+    excessScalingRef.current.innerHTML = 'Excess scaling max flow: ' + totalFlow + '<br /> Time elapsed: ' + (end - start) + 'ms';
   };
 
   const calculateWaveScalingMaxFlow = () => {
+    let start = new Date();
     let result = waveScalingPushRelabel(structuredClone(state.graphForAlgs));
+    let end = new Date();
+    let totalFlow = result.edges.reduce((partialSum, elem) => partialSum + (elem.startNode === 1 && elem.endNode !== 1 ? elem.flow : 0), 0);
     setState(prevState => ({
       ...prevState,
       graph: {
         ...prevState.graph,
-        edges: getEdges(result)
+        edges: getEdges(result, totalFlow)
       }
     }));
-    waveScalingRef.current.innerText = 'Wave scaling max flow: ' + result.edges.reduce((partialSum, elem) => partialSum + (elem.startNode === 1 && elem.endNode !== 1 ? elem.flow : 0), 0);
+    waveScalingRef.current.innerHTML = 'Wave scaling max flow: ' + totalFlow + '<br /> Time elapsed: ' + (end - start) + 'ms';
   };
+
+  let options = {
+    edges: {
+      smooth: {
+        "type": "curvedCW",
+        "forceDirection": "none",
+        "roundness": 0.15
+      },
+      scaling: {
+        min: 0,
+        max: 2
+      }
+    }
+  }
 
   return (
     <div className="App">
@@ -187,19 +214,29 @@ let App = () => {
       </div>
       <div id="graphContainer">
         <div id="left">
-          <Graph graph={state.graph} style={{"height": "18em", "width": "37em"}} />
+          <Graph 
+              graph={state.graph} 
+              style={{"height": "55vh", "width": "98.8vh", "margin": "0", "padding": "0"}} 
+              options={options}
+          />
         </div>
         <div id="right">
-          <p id='nodes'>Number of nodes: { state.graphForAlgs.nodes ? state.graphForAlgs.nodes.length : 0 }</p><br />
-          <p ref={arcRef}>Arcs: </p><br />
-          <input type="button" value={'Push relabel'} onClick={calculateMaxFlow} />
-          <p ref={pushRelRef}>Max flow: </p> <br />
-          <input type="button" value={'Fifo push relabel'} onClick={calculateFifoMaxFlow} />
-          <p ref={fifoRef}>Fifo max flow: </p> <br />
-          <input type="button" value={'Excess scaling push relabel'} onClick={calculateExcessScalingMaxFlow} />
-          <p ref={excessScalingRef}>Excess scaling max flow: </p>
-          <input type="button" value={'Wave scaling push relabel'} onClick={calculateWaveScalingMaxFlow} />
-          <p ref={waveScalingRef}>Wave scaling max flow: </p>
+          <div id="pushRelabel">
+            <input type="button" value={'Push-relabel'} onClick={calculateMaxFlow} />
+            <p ref={pushRelRef}>Max flow: <br /> Time elapsed: </p>
+          </div>
+          <div id="fifoPushRelabel">
+            <input type="button" value={'Fifo push-relabel'} onClick={calculateFifoMaxFlow} />
+            <p ref={fifoRef}>Fifo max flow: <br /> Time elapsed: </p>
+          </div>
+          <div id="excessPushRelabel">
+            <input type="button" value={'Excess scaling push-relabel'} onClick={calculateExcessScalingMaxFlow} />
+            <p ref={excessScalingRef}>Excess scaling max flow: <br /> Time elapsed: </p>
+          </div>
+          <div id="wavePushRelabel">
+            <input type="button" value={'Wave scaling push-relabel'} onClick={calculateWaveScalingMaxFlow} />
+            <p ref={waveScalingRef}>Wave scaling max flow: <br /> Time elapsed: </p>
+          </div>
         </div>
       </div>
     </div>

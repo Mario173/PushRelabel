@@ -26,6 +26,7 @@ ul.nav {
   border: 1px solid #39A2DB;
   border-radius: 2rem;
   padding-left: 0px;
+  background: rgba(50, 224, 196, 0.15);
   @media (max-width: 768px) {
     width: 90%;
   }
@@ -46,7 +47,7 @@ ul.nav li:nth-child(2) {
   border-top-right-radius: 2rem;
 }
 ul.nav li:hover {
-  background: rgba(50, 224, 196, 0.15);
+  background: rgba(44, 107, 197, 0.15);
 }
 ul.nav li.active {
   background: #39A2DB;
@@ -88,7 +89,14 @@ input[type="number"] {
 
 #right {
   border-left: 1.5px solid #39A2DB;
-  width: 30%;
+  width: 40%;
+  height: 100%;
+  margin: 0;
+}
+
+#left {
+  width: 60%;
+  margin: 0;
 }
 
 #graphContainer {
@@ -99,4 +107,37 @@ input[type="number"] {
   border: 2px solid #39A2DB;
   border-radius: 2rem;
   width: 80%;
+  padding: 0;
+}
+
+#pushRelabel, #fifoPushRelabel, #excessPushRelabel, #wavePushRelabel {
+  padding: 1em;
+  width: 100%;
+  height: 25%;
+}
+
+#fifoPushRelabel, #excessPushRelabel, #wavePushRelabel {
+  border-top: 1.5px solid #39A2DB;
+}
+
+input[type=button] {
+  border: 1px solid #39A2DB;
+  border-radius: 2rem;
+  background-color: white;
+  padding: 0.3em;
+  font-weight: bold;
+  color: black;
+  background: rgba(50, 224, 196, 0.15);
+}
+input[type=button]:hover {
+  background: rgba(9, 40, 197, 0.15);
+  cursor: pointer;
+}
+input[type=button].active {
+  background: #39A2DB;
+}
+
+Graph {
+  position:absolute;
+  transform: rotate(360deg) scaleX(-1);
 }
