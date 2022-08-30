@@ -176,6 +176,54 @@ let App = () => {
     waveScalingRef.current.innerHTML = 'Wave scaling max flow: ' + totalFlow + '<br /> Time elapsed: ' + (end - start) + 'ms';
   };
 
+  const mySetEdges = () => {
+    let edges = [];
+    for(let row = 0; row < 40; row++) {
+      for(let col = row + 1; col < 40; col++) {
+        edges.push({
+          startNode: parseInt(row) + 1,
+          endNode: parseInt(col) + 1,
+          capacity: parseInt(col) + parseInt(row) + 2,
+          flow: 0
+        }, {
+          startNode: parseInt(col) + 1,
+          endNode: parseInt(row) + 1,
+          capacity: 0,
+          flow: 0
+        });
+      }
+    }
+    return edges;
+  }
+
+  const mySetNodes = () => {
+    let nodes = [];
+    for(let row = 0; row < 40; row++) {
+      nodes.push({
+        label: parseInt(row),
+        height: 0,
+        excess: 0
+      });
+    }
+    return nodes;
+  }
+
+  const insertBigGraphNodes = () => setState(prevState => ({
+    ...prevState,
+    graphForAlgs: {
+      ...prevState.graphForAlgs,
+      nodes: mySetNodes()
+    }
+  }));
+
+  const insertBigGraphEdges = () => setState(prevState => ({
+    ...prevState,
+    graphForAlgs: {
+      ...prevState.graphForAlgs,
+      edges: mySetEdges()
+    }
+  }));
+
   let options = {
     edges: {
       smooth: {
@@ -212,6 +260,10 @@ let App = () => {
           </div>
         </div>
       </div>
+      {/*<div>
+        <input type="button" value={'Insert'} onClick={insertBigGraphNodes} />
+        <input type="button" value={'Insert'} onClick={insertBigGraphEdges} />
+      </div>*/}
       <div id="graphContainer">
         <div id="left">
           <Graph 
