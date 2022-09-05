@@ -89,13 +89,13 @@ input[type="number"] {
 
 #right {
   border-left: 1.5px solid #39A2DB;
-  width: 40%;
+  width: 27.5%;
   height: 100%;
   margin: 0;
 }
 
 #left {
-  width: 60%;
+  width: 72.5%;
   margin: 0;
 }
 
@@ -106,7 +106,8 @@ input[type="number"] {
   margin: 0 auto;
   border: 2px solid #39A2DB;
   border-radius: 2rem;
-  width: 80%;
+  width: 85%;
+  height: 60%;
   padding: 0;
 }
 
@@ -140,4 +141,33 @@ input[type=button].active {
 Graph {
   position:absolute;
   transform: rotate(360deg) scaleX(-1);
+}
+
+div[data-tool-tip]{
+  position: relative;
+  text-decoration: none;
+  color: rgba(255,255,255,0.75);
+}
+
+div[data-tool-tip]::after{
+  content: attr(data-tool-tip);
+  display: block;
+  position: absolute;
+  background-color: dimgrey;
+  padding: 1em 3em;
+  color: white;
+  border-radius: 5px;
+  font-size: .5em;
+  bottom: 0;
+  left: -180%;
+  white-space: nowrap;
+  transform: scale(0);
+  transition: 
+  transform ease-out 150ms,
+  bottom ease-out 150ms;
+}
+
+div[data-tool-tip]:hover::after{
+  transform: scale(1);
+  bottom: 200%;
 }

@@ -263,12 +263,12 @@ let App = () => {
       {/*<div>
         <input type="button" value={'Insert'} onClick={insertBigGraphNodes} />
         <input type="button" value={'Insert'} onClick={insertBigGraphEdges} />
-      </div>*/}
+            </div><br /><br />*/}
       <div id="graphContainer">
         <div id="left">
           <Graph 
               graph={state.graph} 
-              style={{"height": "55vh", "width": "98.8vh", "margin": "0", "padding": "0"}} 
+              style={{"height": "55vh", "width": "126.5vh", "margin": "0", "padding": "0"}} 
               options={options}
           />
         </div>
@@ -290,7 +290,7 @@ let App = () => {
             <p ref={waveScalingRef}>Wave scaling max flow: <br /> Time elapsed: </p>
           </div>
         </div>
-      </div>
+      </div><br /> <br />
     </div>
   );
 }

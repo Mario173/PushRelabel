@@ -121,9 +121,9 @@ export const Matrix = (props) => {
                     <label id="matrixLabel">Edges: </label>
                     <textarea cols="40" rows="5" name="edges" ref={node => (state.inputText = node)}></textarea>
                     <FontAwesomeIcon 
-                        title="Matrix input of the edges has to be done in a format &#x7B;&#x7B;0, 3&#x7D;, &#x7B;0, 2&#x7D;&#x7D;, which in this case
-                        represents a graph with two nodes and two egdes, one with start node 1, end node 2 and capacity 3
-                        and one with start node 2, end node 2 and capacity 2."
+                        title="Matrix input of the edges has to be done in a format &#x7B;&#x7B;0, 3&#x7D;, &#x7B;0, 2&#x7D;&#x7D;, which in this case represents a graph 
+                        with two nodes and two edges, one whose start node is node 1, end node is node 2 and capacity 
+                        is 3 and one whose start node is node 2, end node is node 2 and capacity is 2."
                         icon={faCircleInfo}
                     />
                 </div>
