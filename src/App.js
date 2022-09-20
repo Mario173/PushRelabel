@@ -196,6 +196,7 @@ let App = () => {
     return edges;
   }
 
+  /* Logika za unošenje velikog grafa
   const mySetNodes = () => {
     let nodes = [];
     for(let row = 0; row < 40; row++) {
@@ -222,7 +223,7 @@ let App = () => {
       ...prevState.graphForAlgs,
       edges: mySetEdges()
     }
-  }));
+  }));*/
 
   let options = {
     edges: {
@@ -238,6 +239,13 @@ let App = () => {
     }
   }
 
+  const clearText = () => {
+    pushRelRef.current.innerHTML = 'Max flow: <br /> Time elapsed: ';
+    fifoRef.current.innerHTML = 'Fifo max flow: <br /> Time elapsed: ';
+    excessScalingRef.current.innerHTML = 'Excess scaling max flow: <br /> Time elapsed: ';
+    waveScalingRef.current.innerHTML = 'Wave scaling max flow: <br /> Time elapsed: ';
+  }
+
   return (
     <div className="App">
       <h2>Maximum Flow Algorithms</h2>
@@ -245,8 +253,8 @@ let App = () => {
         <div className="Tabs">
           {/* Tab nav */}
           <ul className="nav">
-            <li onClick={() => setState({...state, tabOne: true})}>Insert graph</li>
-            <li onClick={() => setState({...state, tabOne: false})}>Insert graph using a matrix</li>
+            <li onClick={() => { setState({...state, tabOne: true}); clearText(); }}>Insert graph</li>
+            <li onClick={() => { setState({...state, tabOne: false}); clearText(); }}>Insert graph using a matrix</li>
           </ul>
           <div className="outlet">
             { state.tabOne ? (<ByHand 
@@ -260,7 +268,8 @@ let App = () => {
           </div>
         </div>
       </div>
-      {/*<div>
+      {/* Logika za unošenje velikog grafa
+      <div>
         <input type="button" value={'Insert'} onClick={insertBigGraphNodes} />
         <input type="button" value={'Insert'} onClick={insertBigGraphEdges} />
             </div><br /><br />*/}

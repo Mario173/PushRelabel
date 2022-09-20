@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import { Tooltip } from '@mui/material';
 
 export const Matrix = (props) => {
     const [state, setState] = useState({
@@ -120,12 +121,27 @@ export const Matrix = (props) => {
                 <div id="matrixInput">
                     <label id="matrixLabel">Edges: </label>
                     <textarea cols="40" rows="5" name="edges" ref={node => (state.inputText = node)}></textarea>
-                    <FontAwesomeIcon 
-                        title="Matrix input of the edges has to be done in a format &#x7B;&#x7B;0, 3&#x7D;, &#x7B;0, 2&#x7D;&#x7D;, which in this case represents a graph 
-                        with two nodes and two edges, one whose start node is node 1, end node is node 2 and capacity 
-                        is 3 and one whose start node is node 2, end node is node 2 and capacity is 2."
-                        icon={faCircleInfo}
-                    />
+                    
+                    <Tooltip
+                            title="Matrix input of the edges has to be done in a format &#x7B;&#x7B;0, 3&#x7D;, &#x7B;0, 2&#x7D;&#x7D;, which in this case represents a graph 
+                            with two nodes and two edges, one whose start node is node 1, end node is node 2 and capacity 
+                            is 3 and one whose start node is node 2, end node is node 2 and capacity is 2."
+                            placement='right'
+                            componentsProps={{ 
+                                tooltip: { 
+                                    sx: { 
+                                        color: 'black',
+                                        backgroundColor: '#32e0c426', 
+                                        border: 1,
+                                        borderColor: '#39A2DB'
+                                    }, 
+                                } 
+                            }}
+                    >
+                        <FontAwesomeIcon
+                            icon={faCircleInfo}
+                        />
+                    </Tooltip>
                 </div>
                 <br />
                 <input type="button" onClick={generateGraph} value={'Generate graph!'} />
