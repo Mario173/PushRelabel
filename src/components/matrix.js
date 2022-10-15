@@ -3,12 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { Tooltip } from '@mui/material';
+import { inputValidation } from './commonHelpers';
 
 export const Matrix = (props) => {
     const [state, setState] = useState({
         infoHover: false,
         inputText: null,
         greenField: false,
+        isHover: false,
         graph: {
             nodes: [{
                 label: 0,
@@ -24,10 +26,6 @@ export const Matrix = (props) => {
     });
 
     useEffect(() => props.generateGraph(state.graph), [state.graph]);
-
-    /*const beginHover = () => setState({ ...state, infoHover: true });
-
-    const endHover = () => setState({ ...state, infoHover: false });*/
 
     const generateGraph = () => {
         state.greenField = true;
@@ -108,19 +106,32 @@ export const Matrix = (props) => {
                     }
                 }
             }
-
-            // props.generateGraph(state.graph);
-        } else {
-            // pocrveni polje
         }
     };
+
+    const checkField = (event) => setState({
+        ...state,
+        greenField: inputValidation(event.target.value)
+    });
+
+    const hoverStyle = (isAllowed) => ({
+        backgroundColor: isAllowed ? 'rgba(9, 40, 197, 0.15)' : 'rgba(50, 224, 196, 0.15)', 
+        cursor: isAllowed ? 'pointer' : 'default'
+    });
 
     return (
         <div>
             <form id="formArcs" action="">
                 <div id="matrixInput">
                     <label id="matrixLabel">Edges: </label>
-                    <textarea cols="40" rows="5" name="edges" ref={node => (state.inputText = node)}></textarea>
+                    <textarea 
+                        cols="40" 
+                        rows="5" 
+                        name="edges" 
+                        ref={node => (state.inputText = node)} 
+                        onChange={checkField}
+                        style={{ borderColor: state.greenField ? 'green' : 'red', outlineColor: state.greenField ? 'green' : 'red' }}
+                    ></textarea>
                     
                     <Tooltip
                             title="Matrix input of the edges has to be done in a format &#x7B;&#x7B;0, 3&#x7D;, &#x7B;0, 2&#x7D;&#x7D;, which in this case represents a graph 
@@ -144,7 +155,14 @@ export const Matrix = (props) => {
                     </Tooltip>
                 </div>
                 <br />
-                <input type="button" onClick={generateGraph} value={'Generate graph!'} />
+                <input 
+                    type="button" 
+                    onClick={generateGraph} 
+                    onMouseEnter={() => setState({ ...state, isHover: true })}
+                    onMouseLeave={() => setState({ ...state, isHover: false })}
+                    value={'Generate graph!'} 
+                    style={hoverStyle(state.greenField && state.isHover)} 
+                />
             </form>
         </div>
     )

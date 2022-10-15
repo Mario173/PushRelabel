@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { doesArcAlreadyExist } from "./commonHelpers";
 import { Form } from "./form";
 
 export const ByHand = (props) => {
@@ -23,30 +24,42 @@ export const ByHand = (props) => {
 
     /* Funkcija koja se pozove kada korisnik klikne na gumb za dodavanje novog brida */
     const addArc = () => {
-        // provjeri za one šeme da oboja u crveno/zeleno i pazi na te vrijednosti dok se program izvodi (bez submita - onChange)
-        /*if(state.start === state.end) {
-        // arc cannot have same start and end node
-        }  else if(false) {
-        // ako već postoji taj brid
-        } else {*/
+        let startNode = parseInt(state.start), endNode = parseInt(state.end), flag = true;
+        let tempEdges = state.graph.edges;
+        for( let i = 0; i < tempEdges.length; i += 2 ) {
+            if( startNode === tempEdges[i].startNode && endNode === tempEdges[i].endNode ) {
+                tempEdges[i].capacity = parseInt(state.capacity);
+                flag = false;
+            }
+        }
+
+        if( flag ) {
             setState({
                 ...state,
                 graph: {
-                ...state.graph,
-                edges: [...state.graph.edges, {
-                    startNode: parseInt(state.start),
-                    endNode: parseInt(state.end),
-                    capacity: parseInt(state.capacity),
-                    flow: 0
-                }, {
-                    startNode: parseInt(state.end),
-                    endNode: parseInt(state.start),
-                    capacity: 0,
-                    flow: 0
-                }]
+                    ...state.graph,
+                    edges: [...state.graph.edges, {
+                        startNode: parseInt(state.start),
+                        endNode: parseInt(state.end),
+                        capacity: parseInt(state.capacity),
+                        flow: 0
+                    }, {
+                        startNode: parseInt(state.end),
+                        endNode: parseInt(state.start),
+                        capacity: 0,
+                        flow: 0
+                    }]
                 }
             });
-        //}
+        } else {
+            setState({
+                ...state,
+                graph: {
+                    ...state.graph,
+                    edges: tempEdges
+                }
+            });
+        }
     };
 
     /* Dvije pomoćne metode za rukovanje promjenama */
